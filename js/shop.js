@@ -1,4 +1,5 @@
 // If you have time, you can move this variable "products" to a json or js file and load the data in this js. It will look more professional
+
 var products = [
   {
     id: 1,
@@ -90,41 +91,87 @@ function buy(id) {
   } else {
     cart.push({ ...foundedItemInProducts, quantity: 1 });
   }
+  applyPromotionsCart();
   console.log(cart);
 }
 
 // Exercise 2
 function cleanCart() {
-    cart = [];
-    total = 0
-    console.log(cart);
+  cart = [];
+  total = 0;
+  deleteCartList = document.getElementById("cart_list");
+  deleteCartList.innerHTML = "";
 }
 
 // Exercise 3
 function calculateTotal() {
   for (let index = 0; index < cart.length; index++) {
-    total = total + cart[index].price * cart[index].quantity
+    total = total + cart[index].price * cart[index].quantity;
   }
   console.log(total);
-
 
   // Calculate total price of the cart using the "cartList" array
 }
 
 // Exercise 4
 function applyPromotionsCart() {
-  // Apply promotions to each item in the array "cart"
+  
+  const originalProduct = products.find((item) => item.id === 1);
+  const updateItem = cart.find((item) => item.id == 1);
+  
+  if (updateItem.id == 1 && updateItem.quantity >= updateItem.offer.number) {
+    updateItem.price = ((100 - updateItem.offer.percent) * originalProduct.price) / 100;
+  }
 }
 
 // Exercise 5
 function printCart() {
-  // Fill the shopping cart modal manipulating the shopping cart dom
+  const cartTableBody = document.getElementById("cart_list");
+
+  cartTableBody.innerHTML = "";
+
+
+  // if (cart.length == 0) {
+  //   const p = document.createElement("p");
+  //   p.textContent = "EL CARRITO ESTÁ VACÍO";
+  //   cartTableBody.classList.add('text-center', 'w-100')
+  //   cartTableBody.appendChild(p)
+  // }
+
+
+  cart.forEach((item) => {
+    const row = document.createElement("tr");
+    const productNameCell = document.createElement("td");
+    productNameCell.textContent = item.name;
+
+    const priceCell = document.createElement("td");
+    priceCell.textContent = `$${item.price.toFixed(2)}`;
+
+    const quantityCell = document.createElement("td");
+    quantityCell.textContent = item.quantity;
+
+    const totalCell = document.createElement("td");
+    const totalPrice = item.price * item.quantity;
+    totalCell.textContent = `$${totalPrice.toFixed(2)}`;
+
+    row.appendChild(productNameCell);
+    row.appendChild(priceCell);
+    row.appendChild(quantityCell);
+    row.appendChild(totalCell);
+
+    cartTableBody.appendChild(row);
+  });
+
+  const totalElement = document.getElementById("total_price");
+  totalElement.textContent = total.toFixed(2);
 }
 
 // ** Nivell II **
 
 // Exercise 7
 function removeFromCart(id) {}
+
+
 
 function open_modal() {
   printCart();
