@@ -91,7 +91,6 @@ function buy(id) {
   } else {
     cart.push({ ...foundedItemInProducts, quantity: 1 });
   }
-  applyPromotionsCart();
   console.log(cart);
 }
 
@@ -108,20 +107,24 @@ function calculateTotal() {
   for (let index = 0; index < cart.length; index++) {
     total = total + cart[index].price * cart[index].quantity;
   }
-  console.log(total);
 
   // Calculate total price of the cart using the "cartList" array
 }
 
 // Exercise 4
-function applyPromotionsCart() {
+function applyPromotionsCart(itemId) {
+
   
-  const originalProduct = products.find((item) => item.id === 1);
-  const updateItem = cart.find((item) => item.id == 1);
-  
-  if (updateItem.id == 1 && updateItem.quantity >= updateItem.offer.number) {
-    updateItem.price = ((100 - updateItem.offer.percent) * originalProduct.price) / 100;
+  let totalDiscount = 0;
+
+  const cartItem = cart.find((item) => item.id === itemId);
+
+  if (cartItem && cartItem.quantity >= cartItem.offer.number) {
+    const discountAmount = (cartItem.price * cartItem.quantity * cartItem.offer.percent) / 100;
+    totalDiscount += discountAmount;
   }
+
+  return totalDiscount;
 }
 
 // Exercise 5
@@ -129,15 +132,6 @@ function printCart() {
   const cartTableBody = document.getElementById("cart_list");
 
   cartTableBody.innerHTML = "";
-
-
-  // if (cart.length == 0) {
-  //   const p = document.createElement("p");
-  //   p.textContent = "EL CARRITO ESTÁ VACÍO";
-  //   cartTableBody.classList.add('text-center', 'w-100')
-  //   cartTableBody.appendChild(p)
-  // }
-
 
   cart.forEach((item) => {
     const row = document.createElement("tr");
@@ -150,8 +144,15 @@ function printCart() {
     const quantityCell = document.createElement("td");
     quantityCell.textContent = item.quantity;
 
+    totalPrice = item.price * item.quantity;
+
     const totalCell = document.createElement("td");
-    const totalPrice = item.price * item.quantity;
+    
+    if ((item.id === 1 || item.id === 3) && item.quantity >= item.offer.number) {
+      const discount = applyPromotionsCart(item.id);
+      totalPrice -= discount;
+    }
+
     totalCell.textContent = `$${totalPrice.toFixed(2)}`;
 
     row.appendChild(productNameCell);
@@ -170,8 +171,6 @@ function printCart() {
 
 // Exercise 7
 function removeFromCart(id) {}
-
-
 
 function open_modal() {
   printCart();
