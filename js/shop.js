@@ -148,8 +148,19 @@ function printCart() {
     const totalCell = document.createElement("td");
 
     const removeCell = document.createElement("td");
+    const btnRemove = document.createElement("button")
+    btnRemove.textContent = 'Delete'
 
-    removeCell.textContent = "botón";
+
+    // TODO
+    // TRATAR DE CAMBIAR EL ESTILO DEL BOTÓN
+    // HACER EL COMPORTAMIENTO DEL BOTÓN
+
+    btnRemove.classList.add('btn-danger')
+    
+    
+    
+    removeCell.appendChild(btnRemove)
 
     if (
       (item.id === 1 || item.id === 3) &&
