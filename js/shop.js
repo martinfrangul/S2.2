@@ -113,14 +113,13 @@ function calculateTotal() {
 
 // Exercise 4
 function applyPromotionsCart(itemId) {
-
-  
   let totalDiscount = 0;
 
   const cartItem = cart.find((item) => item.id === itemId);
 
   if (cartItem && cartItem.quantity >= cartItem.offer.number) {
-    const discountAmount = (cartItem.price * cartItem.quantity * cartItem.offer.percent) / 100;
+    const discountAmount =
+      (cartItem.price * cartItem.quantity * cartItem.offer.percent) / 100;
     totalDiscount += discountAmount;
   }
 
@@ -147,8 +146,15 @@ function printCart() {
     totalPrice = item.price * item.quantity;
 
     const totalCell = document.createElement("td");
-    
-    if ((item.id === 1 || item.id === 3) && item.quantity >= item.offer.number) {
+
+    const removeCell = document.createElement("td");
+
+    removeCell.textContent = "botón";
+
+    if (
+      (item.id === 1 || item.id === 3) &&
+      item.quantity >= item.offer.number
+    ) {
       const discount = applyPromotionsCart(item.id);
       totalPrice -= discount;
     }
@@ -159,6 +165,13 @@ function printCart() {
     row.appendChild(priceCell);
     row.appendChild(quantityCell);
     row.appendChild(totalCell);
+    row.appendChild(removeCell);
+
+    if (cart.length > 0) {
+      const colDel = document.getElementById('col-delete')
+      colDel.classList.remove('d-none')
+      colDel.classList.add('d-table-cell')
+    }
 
     cartTableBody.appendChild(row);
   });
