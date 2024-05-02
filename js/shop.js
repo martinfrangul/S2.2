@@ -91,6 +91,7 @@ function buy(id) {
   } else {
     cart.push({ ...foundedItemInProducts, quantity: 1 });
   }
+  calculateTotal()
 }
 
 // Exercise 2
@@ -102,12 +103,13 @@ function cleanCart() {
 }
 
 // Exercise 3
-function calculateTotal() {
-  for (let index = 0; index < cart.length; index++) {
-    total = total + cart[index].price * cart[index].quantity;
-  }
 
-  // Calculate total price of the cart using the "cartList" array
+function calculateTotal() {
+  total = cart.reduce((accumulator, currentItem) => {
+    currentItem.price = currentItem.price 
+    return accumulator + (currentItem.price * currentItem.quantity) - applyPromotionsCart(currentItem.id);
+  }, 0);
+  console.log(total);
 }
 
 // Exercise 4
@@ -127,6 +129,7 @@ function applyPromotionsCart(itemId) {
 
 // Exercise 5
 function printCart() {
+  calculateTotal()
   const cartTableBody = document.getElementById("cart_list");
 
   cartTableBody.innerHTML = "";
