@@ -91,7 +91,6 @@ function buy(id) {
   } else {
     cart.push({ ...foundedItemInProducts, quantity: 1 });
   }
-  console.log(cart);
 }
 
 // Exercise 2
@@ -147,20 +146,22 @@ function printCart() {
 
     const totalCell = document.createElement("td");
 
+    // BOTÓN DE REMOVER ELEMENTO
+
     const removeCell = document.createElement("td");
-    const btnRemove = document.createElement("button")
-    btnRemove.textContent = 'Delete'
+    const btnRemove = document.createElement("button");
+    btnRemove.textContent = "Delete";
+    btnRemove.classList.add("btn", "btn-danger");
+    btnRemove.setAttribute("id", item.id);
+    btnRemove.addEventListener("click", function (event) {
+      const productId = event.target.getAttribute("id");
+      removeFromCart(productId);
+    });
+    removeCell.appendChild(btnRemove);
 
+    ////////////////
 
-    // TODO
-    // TRATAR DE CAMBIAR EL ESTILO DEL BOTÓN
-    // HACER EL COMPORTAMIENTO DEL BOTÓN
-
-    btnRemove.classList.add('btn-danger')
-    
-    
-    
-    removeCell.appendChild(btnRemove)
+    // LÓGICA DE DESCUENTOS
 
     if (
       (item.id === 1 || item.id === 3) &&
@@ -169,6 +170,8 @@ function printCart() {
       const discount = applyPromotionsCart(item.id);
       totalPrice -= discount;
     }
+
+    ////////////////
 
     totalCell.textContent = `$${totalPrice.toFixed(2)}`;
 
@@ -179,9 +182,9 @@ function printCart() {
     row.appendChild(removeCell);
 
     if (cart.length > 0) {
-      const colDel = document.getElementById('col-delete')
-      colDel.classList.remove('d-none')
-      colDel.classList.add('d-table-cell')
+      const colDel = document.getElementById("col-delete");
+      colDel.classList.remove("d-none");
+      colDel.classList.add("d-table-cell");
     }
 
     cartTableBody.appendChild(row);
@@ -194,7 +197,16 @@ function printCart() {
 // ** Nivell II **
 
 // Exercise 7
-function removeFromCart(id) {}
+function removeFromCart(productId) {
+  const itemToDelete = cart.find((item) => item.id == productId);
+  const itemToDeleteIdx = cart.findIndex((item) => item.id == productId);
+  if (itemToDelete.quantity > 1) {
+    cart[itemToDeleteIdx].quantity--
+  } else {
+    cart.splice(itemToDeleteIdx, 1);
+  }
+  printCart();
+}
 
 function open_modal() {
   printCart();
