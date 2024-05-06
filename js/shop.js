@@ -118,7 +118,7 @@ function applyPromotionsCart(itemId) {
 
   const cartItem = cart.find((item) => item.id === itemId);
 
-  if (cartItem && cartItem.quantity >= cartItem.offer.number) {
+  if (cartItem && cartItem.offer && cartItem.quantity >= cartItem.offer.number) {
     const discountAmount =
       (cartItem.price * cartItem.quantity * cartItem.offer.percent) / 100;
     totalDiscount += discountAmount;
@@ -126,6 +126,7 @@ function applyPromotionsCart(itemId) {
 
   return totalDiscount;
 }
+
 
 // Exercise 5
 function printCart() {
